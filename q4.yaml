@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kumpy-koala
+spec:
+  volumes:
+  - name: workdir
+    emptyDir: {}
+  containers:
+  - name: checker
+    image: alpine
+    command: ["sh","-c", "if test -f /workdir/calm.txt;then sleep 10 ;else exit 1;fi"]
+    volumeMounts:
+    - name: workdir
+      mountPath: /workdir
+  initContainers:
+  - name: busybox
+    image: busybox
+    command: ['/bin/sh', '-c', 'touch /workdir/calm.txt']
+    volumeMounts:
+    - name: workdir
+      mountPath: /workdir
