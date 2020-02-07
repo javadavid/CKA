@@ -9,7 +9,7 @@ spec:
   containers:
   - name: checker
     image: alpine
-    command: ["sh","-c", "if test -f /workdir/calm.txt;then sleep 10 ;else exit 1;fi"]
+    command: ["sh","-c", "if test -f /workdir/calm.txt;then sleep 100000;fi"]
     volumeMounts:
     - name: workdir
       mountPath: /workdir
