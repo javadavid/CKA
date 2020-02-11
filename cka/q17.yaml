@@ -1,0 +1,12 @@
+#1. create deployment
+kubectl run nginx-dns --image=nginx
+#2. expose service
+kubectl expose deployment nginx-dns --port=80
+#3. get pod IP
+kubectl  get pods -o wide | grep nginx-dns | awk '{print $6}' 
+#4. create test pod busybox1.28
+kubectl create -f https://k8s.io/examples/admin/dns/busybox.yaml
+#5. write svc dns to the right place
+kubectl exec -ti busybox -- nslookup nginx-dns > /opt/service.dns
+#6. write specific pod ip dns to the right place
+kubectl exec -ti busybox -- nslookup <Pod ip> > /opt/pod.dns

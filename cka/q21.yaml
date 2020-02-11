@@ -1,0 +1,14 @@
+#1. get nodes
+kubectl get nodes
+#2. ssh node, find the config file
+ssh node01
+ps -ef | grep kubelet | grep config
+#3. Add the staticPodPath in the config.yaml
+vi  /var/lib/kubelet/config.yaml
+staticPodPath: /etc/kubernetes/manifests
+systemctl restart kubelet
+exit node01
+#4. create static pod use command
+kubectl run myservice --image=nginx --restart=Never -o yaml > myservice.yaml
+scp -r myservice.yaml node01:/etc/kubernetes/manifests
+kubectl get pods

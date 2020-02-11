@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: kucc4
+  name: kucc4
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+  - image: redis
+    name: redis
+  - image: memcached
+    name: memcached
+  - image: consul
+    name: consul
+status: {}
