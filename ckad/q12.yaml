@@ -1,0 +1,6 @@
+# edit deployment, search maxSuge 10%, maxUnavailable 2
+kubectl edit deployment nginx -n kdpd00201
+# edit image version
+kubectl set image deployment/nginx nginx=lfccncf/nginx:1.13 -n kdpd00201
+# roll back
+kubectl get deployment nginx -o wide -n kdpd00201
