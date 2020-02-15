@@ -1,0 +1,19 @@
+#1. generate template
+kubectl run app1 --image=lfccncf/arg-output --restart=Never --dry-run -o yaml > q10.yaml
+#2. modify template add command
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app1
+  name: app1
+spec:
+  containers:
+  - image: lfccncf/arg-output
+    name: app1cont
+    args: ["--lines 56 -F"]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {} 

@@ -1,0 +1,4 @@
+#1. deploy pod
+kubectl apply -f /opt/KDOB/counterapp.yaml
+#2. logs
+kubectl logs counterapp > /opt/log_output.txt

@@ -75,5 +75,5 @@ status:
   replicas: 1
   updatedReplicas: 1
   
-  #4. kubectl apply -f deployment.yaml
+  #4. kubectl apply -f deployment.yaml  &&  kubectl replace -f deployment.yaml --force && delete/create
   #5. describe the deployment to verify service account
