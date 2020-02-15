@@ -1,0 +1,25 @@
+#1. kubectl create configmap special-config --from-literal=key2=value3
+#2. kubectl run nginx-configmap --image=nginx --restart=Never --dry-run -o yaml > q5.yaml
+#3. query configMap & mount
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-configmap
+  name: nginx-configmap
+spec:
+  containers:
+  - image: nginx
+    name: nginx-configmap
+    resources: {}
+    volumeMounts:
+      - name: config-volume
+        mountPath: /yet/another/path
+  volumes:
+    - name: config-volume
+      configMap:
+        name: special-config
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}

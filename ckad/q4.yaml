@@ -1,0 +1,23 @@
+#1. kubectl create namespace pod-resources
+#2. kubectl run nginx-resources --image=nginx --restart=Never --dry-run -o yaml > q4.yaml
+#3. kubectl apply -f q4.yaml -n pod-resources
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-resources
+  name: nginx-resources
+spec:
+  containers:
+  - image: nginx
+    name: nginx-resources
+    resources:
+      requests:
+        memory: "2Gi"
+        cpu: "200m"
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
