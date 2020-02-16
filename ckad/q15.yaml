@@ -1,0 +1,5 @@
+#1. edit deployment
+kubectl edit deployment kdsn00101-deployment -n kdsn00101
+#2. add labels in the pod tempate metadata
+#3. serach expose deployment
+kubectl expose deployment kdsn00101-deployment --type=NodePort --name=bob --port=81 -n kdsn00101
