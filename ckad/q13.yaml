@@ -1,0 +1,53 @@
+#1. generate template 
+kubectl run deployment-web --image=lfccncf/busybox:1 --dry-run -o yaml > q13.yaml
+#2. search fluentd edit template
+#3. check configMap
+#4. check container logs
+#5. get into container: kubectl exec -it deployment-web-bc7978fff-8f8vd -c adaptor-dev -- sh
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: deployment-web
+  name: deployment-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: deployment-web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: deployment-web
+    spec:
+      containers:
+      - image: lfccncf/busybox:1
+        name: logger-123
+        args:
+        - /bin/sh
+        - -c
+        - >
+          while true; do echo i luv cncf >> /tmp/log/input.log; sleep 10; done
+        volumeMounts:
+        - name: varlog
+          mountPath: /tmp/log
+      - image: lfccncf/fluentd:v0.12
+        name: adaptor-dev
+        env:
+        - name: FLUENTD_ARGS
+          value: -c /etc/test/fluentd.conf
+        volumeMounts:
+        - name: varlog
+          mountPath: /tmp/log
+        - name: config-volume
+          mountPath: /etc/test
+      volumes:
+      - name: varlog
+        emptyDir: {}
+      - name: config-volume
+        configMap:
+          name: fluentd-config
+status: {}

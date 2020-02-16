@@ -1,0 +1,20 @@
+#1. search jobTemplate & deadline(startingDeadlineSeconds)
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  startingDeadlineSeconds: 22
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - date;
+          restartPolicy: OnFailure
