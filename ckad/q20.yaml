@@ -1,0 +1,54 @@
+#1. SSH node edit html
+Acct=Finance
+#2. create persistentVolume, search persistentVolume copy template
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: keys
+  hostPath:
+      path: /opt/KDSP00101/data
+#3. Create persistentVolumeClaim, search claim, make sure the same storageClassName: keys
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: keys
+#4. Use command generate pod template
+kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml  > q20.yaml
+#5. vi q20.yaml, search Volume and search persistentVolumeClaim
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: my-storage-app
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+        - name: site-data
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: site-data
+      persistentVolumeClaim:
+        claimName: task-pv-claim
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+#6. kubectl apply -f each of the files
+#7. verfiy
+kubectl exec -it nginx -- sh  
