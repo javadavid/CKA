@@ -1,0 +1,32 @@
+#1. edit service and change the port to 8080
+kubectl edit service nginxsvc
+#2. create config map by spefic file path, search from-file
+kubectl create configmap haproxy-config --from-file=/opt/KDMC00101/haproxy.cfg
+#3. Edit pod file under /opt/poller.yaml 1. search configMap: for volumes/volumeMounts 2. search args for container
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: poller
+    item: KDMC00101
+  name: poller
+spec:
+  containers:
+  - args:
+    - localhost:80
+    env:
+    - name: LOOP
+      value: '5'
+    image: lfccncf/continuous-curl:1.0
+    name: poller
+  - name: haproxy-ambassador
+    image: haproxy
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: usrlocaletchaproxy
+      mountPath: /usr/local/etc/haproxy
+  volumes:
+  - name: usrlocaletchaproxy
+    configMap:
+      name: haproxy-config

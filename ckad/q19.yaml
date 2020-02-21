@@ -1,0 +1,4 @@
+#1. list all pod in the namespace 
+kubectl get pods --all-namespaces | grep -v Running | awk '{print $1"/"$2}' 
+#2. list events find errors for the error pod
+kubectl get events --all-namespaces | grep poller | grep Failed
