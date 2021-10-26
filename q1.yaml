@@ -1,1 +1,1 @@
-kubectl logs bar | grep file-not-found > /opt/KULM00201/bar
+kubectl logs bar | grep file-not-found > /opt/KULM00201/bar   
